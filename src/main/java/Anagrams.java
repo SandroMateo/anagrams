@@ -23,7 +23,7 @@ class Anagrams {
         String[] letterArray2 = mUserWords[i].split("");
         List<String> characterList2 = new ArrayList<String>(Arrays.asList(letterArray2));
         Collections.sort(characterList2);
-        if(characterList1.equals(characterList2) && (i != j)) {
+        if(characterList1.equals(characterList2) && (i != j) && !mAnagramList.contains(mUserWords[j])) {
           mAnagramList.add(mUserWords[j]);
         }
       }
