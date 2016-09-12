@@ -22,13 +22,7 @@ public class App {
       Map<String,Object> model = new HashMap<String,Object>();
       String sentence = request.queryParams("anagrams");
       Anagrams anagramObj = new Anagrams(sentence);
-      List<String> anagramsList = new ArrayList<String>();
-      anagramsList = anagramObj.runAnagrams();
-      String listElementsCombined = "";
-      for (String element : anagramsList) {
-        listElementsCombined = listElementsCombined + "<li>" + element + "</li>";        
-      }
-      model.put("anagrams", listElementsCombined);
+      model.put("anagrams", anagramObj.runAnagrams());
       model.put("template", "templates/anagrams.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());

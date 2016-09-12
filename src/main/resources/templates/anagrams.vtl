@@ -1,4 +1,6 @@
 <h3>Here are the anagrams: </h3>
 <ul>
-  $anagrams
+  #foreach ($anagram in $anagrams)
+    <li>$anagram</li>
+  #end
 </ul>
