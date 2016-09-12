@@ -1,14 +1,37 @@
-import java.io.Console;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+
+import spark.ModelAndView;
+import spark.template.velocity.VelocityTemplateEngine;
+
+import static spark.Spark.*;
 
 public class App {
   public static void main(String[] args) {
-    Console console = System.console();
+    String layout = "templates/layout.vtl";
 
-    System.out.print("Enter a sentence and we'll let you know if there are any anagrams in it:");
-    String userInputSentence = console.readLine();
-    Anagrams anagramFinder = new Anagrams(userInputSentence);
+    get("/", (request, response) -> {
+      Map<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/form.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
-    System.out.println("These words are anagrams of each other:");
-    System.out.println(anagramFinder.runAnagrams());
+    get("/anagrams", (request,response) -> {
+      Map<String,Object> model = new HashMap<String,Object>();
+      String sentence = request.queryParams("anagrams");
+      Anagrams anagramObj = new Anagrams(sentence);
+      List<String> anagramsList = new ArrayList<String>();
+      anagramsList = anagramObj.runAnagrams();
+      String listElementsCombined = "";
+      for (String element : anagramsList) {
+        listElementsCombined = listElementsCombined + "<li>" + element + "</li>";        
+      }
+      model.put("anagrams", listElementsCombined);
+      model.put("template", "templates/anagrams.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
   }
 }
